@@ -1,0 +1,63 @@
+<div class="card mt-4">
+    <h4 class="card-header">Добавить студента</h4>
+    <div class="card-body">
+        <form [formGroup]="addForm">
+            <div class="form-group">
+                <label for="name">Имя</label>
+                <input type="text" formControlName="name" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.name.errors }" maxlength="40">
+                <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+                    <div *ngIf="form.name.errors.required">Поле имя должно быть заполнено</div>
+                    <div *ngIf="form.name.errors.max">Поле имя должно короче 40 символов</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="patronymic">Отчество</label>
+                <input type="text" formControlName="patronymic" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.patronymic.errors }" maxlength="60">
+                <div *ngIf="submitted && form.patronymic.errors" class="invalid-feedback">
+                    <div *ngIf="form.patronymic.errors.required">Поле отчество должно быть заполнено</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="surname">Фамилия</label>
+                <input type="text" formControlName="surname" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.surname.errors }" maxlength="40">
+                <div *ngIf="submitted && form.surname.errors" class="invalid-feedback">
+                    <div *ngIf="form.surname.errors.required">Поле фамилия должно быть заполнено</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sex">Пол</label>
+                <select formControlName="sex" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.sex.errors }">
+                    <option>Мужской</option>
+                    <option>Женский</option>
+                </select>
+                <div *ngIf="submitted && form.sex.errors" class="invalid-feedback">
+                    <div *ngIf="form.sex.errors.required">Поле имя должно быть заполнено</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="studentID">Идентификатор</label>
+                <input type="text" formControlName="studentID" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.studentID.errors }" maxlength="16">
+                <div *ngIf="submitted && form.studentID.errors" class="invalid-feedback">
+                    <div *ngIf="form.studentID.errors.minlength">Поле идентификатор должно быть больше 6 символов</div>
+                    <div *ngIf="form.studentID.errors.maxlength">Поле идентификатор должно быть меньше 16 символов</div>
+                </div>
+            </div>
+
+            <button [disabled]="loading" type="button" (click)="onAddStudent()" class="btn btn-success btn-block">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Добавить
+            </button>
+            <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+        </form>
+
+    </div>
+</div>

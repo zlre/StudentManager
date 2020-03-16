@@ -1,0 +1,83 @@
+<div class="card mt-4">
+    <h4 class="card-header">Список студентов</h4>
+    <div class="card-body">
+        <input type="text" class="form-control" name="searchString" placeholder="Введите строку для поиска..."
+            [(ngModel)]="searchString" />
+
+        <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
+        <table *ngIf="!loading" class="table mt-2 table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        <app-clickable-head title="Имя" propertyName="name" (stateChanged)="onHeadChange($event)">
+                        </app-clickable-head>
+                    </th>
+                    <th>
+                        <app-clickable-head title="Отчетство" propertyName="patronymic"
+                            (stateChanged)="onHeadChange($event)"></app-clickable-head>
+                    </th>
+                    <th>
+                        <app-clickable-head title="Фамилия" propertyName="surname"
+                            (stateChanged)="onHeadChange($event)"></app-clickable-head>
+                    </th>
+                    <th>
+                        <app-clickable-head title="Пол" propertyName="sex" (stateChanged)="onHeadChange($event)">
+                        </app-clickable-head>
+                    </th>
+                    <th>
+                        <app-clickable-head title="Идентификатор" propertyName="studentID"
+                            (stateChanged)="onHeadChange($event)"></app-clickable-head>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr
+                    *ngFor="let student of students | filterBy: ['name', 'patronymic', 'surname', 'studentID']: searchString | orderBy : searchArr">
+                    <td (click)="onUpdateStudent(student.id)" style="cursor: pointer;">{{student.name}}</td>
+                    <td (click)="onUpdateStudent(student.id)" style="cursor: pointer;">{{student.patronymic}}</td>
+                    <td (click)="onUpdateStudent(student.id)" style="cursor: pointer;">{{student.surname}}</td>
+                    <td>{{ student.sex == 0 ? 'Мужской' : 'Женский' }}</td>
+                    <td>{{student.studentID}}</td>
+                    <td class="text-center">
+                        <button (click)="setCurrentStudentForDelete(student)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"><i
+                                class="fa fa-trash-o"></i></button>
+                        <!--<button  class="btn btn-info" (click)="onUpdateStudent(student.id)"
+                            style="margin-left: 10px"><i class="fa fa-pencil"></i></button>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="float-right">
+            <small>Общее количество студентов: {{ count }}</small>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Удаление студента</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Внимание!
+                <br>
+                Студент {{ currentStudentForDelete?.name }} {{ currentStudentForDelete?.patronymic }} {{ currentStudentForDelete?.surname }} удалится так же и других пользователей.
+                <br>
+                Вы действительно хотите удалить студента?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                <button type="button" class="btn btn-primary" (click)="onDeleteStudent()" data-dismiss="modal">Да</button>
+            </div>
+        </div>
+    </div>
+</div>
